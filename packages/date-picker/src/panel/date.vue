@@ -96,6 +96,7 @@
               :value="value"
               :default-value="defaultValue ? new Date(defaultValue) : null"
               :date="date"
+              :show-week-number="showWeekNumber"
               :cell-class-name="cellClassName"
               :disabled-date="disabledDate">
             </date-table>
