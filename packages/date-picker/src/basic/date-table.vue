@@ -9,7 +9,7 @@
     <tbody>
     <tr>
       <!--<th v-if="showWeekNumber">{{ t('el.datepicker.week') }}</th>-->
-      <th v-if="showWeekNumber">周数</th><!--标记，为国际化-->
+      <th v-if="showWeekNumber">周</th><!--标记，为国际化-->
       <th v-for="(week, key) in WEEKS" :key="key">{{ t('el.datepicker.weeks.' + week) }}</th>
     </tr>
     <tr
