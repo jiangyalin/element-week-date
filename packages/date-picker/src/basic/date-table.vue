@@ -8,13 +8,14 @@
     :class="{ 'is-week-mode': selectionMode === 'week' }">
     <tbody>
     <tr>
-      <th v-if="showWeekNumber">{{ t('el.datepicker.week') }}</th>
+      <!--<th v-if="showWeekNumber">{{ t('el.datepicker.week') }}</th>-->
+      <th v-if="showWeekNumber">周</th><!--标记，为国际化-->
       <th v-for="(week, key) in WEEKS" :key="key">{{ t('el.datepicker.weeks.' + week) }}</th>
     </tr>
     <tr
       class="el-date-table__row"
       v-for="(row, key) in rows"
-      :class="{ current: isWeekActive(row[1]) }"
+      :class="{ current: isWeekActive(row[showWeekNumber ? 1 : 0]) }"
       :key="key">
       <td
         v-for="(cell, key) in row"
@@ -82,11 +83,11 @@
 
       showWeekNumber: {
         type: Boolean,
-        default: false
+        default: true
       },
 
       disabledDate: {},
-  
+
       cellClassName: {},
 
       minDate: {},
@@ -150,9 +151,10 @@
           const row = rows[i];
 
           if (this.showWeekNumber) {
-            if (!row[0]) {
-              row[0] = { type: 'week', text: getWeekNumber(nextDate(startDate, i * 7 + 1)) };
-            }
+            // if (!row[0]) {
+            //   row[0] = { type: 'week', text: getWeekNumber(nextDate(startDate, i * 7 + 1)) };
+            // }
+            row[0] = { type: 'week', text: getWeekNumber(this.getDateOfCell(i, 1)) };
           }
 
           for (let j = 0; j < 7; j++) {
@@ -202,7 +204,8 @@
           if (this.selectionMode === 'week') {
             const start = this.showWeekNumber ? 1 : 0;
             const end = this.showWeekNumber ? 7 : 6;
-            const isWeekActive = this.isWeekActive(row[start + 1]);
+            // const isWeekActive = this.isWeekActive(row[start + 1]);
+            const isWeekActive = this.isWeekActive(row[start]);
 
             row[start].inRange = isWeekActive;
             row[start].start = isWeekActive;
@@ -322,7 +325,8 @@
         newDate.setDate(parseInt(cell.text, 10));
 
         if (isDate(this.value)) {
-          const dayOffset = (this.value.getDay() - this.firstDayOfWeek + 7) % 7 - 1;
+          // const dayOffset = (this.value.getDay() - this.firstDayOfWeek + 7) % 7 - 1;
+          const dayOffset = (this.value.getDay() - this.firstDayOfWeek + 7) % 7;
           const weekDate = prevDate(this.value, dayOffset);
           return weekDate.getTime() === newDate.getTime();
         }
